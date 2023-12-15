@@ -1,0 +1,26 @@
+.identity-button {
+  background-color: #00008b;
+  max-width: 50%;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  margin: 20px 300px;
+  font-size: xx-large;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 10px;
+}
+
+.identity {
+  max-width: 50%;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  margin: 20px 300px;
+  font-size: xx-large;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: 10px;
+}
+
+.identity:link {
+  text-decoration: None;
+}

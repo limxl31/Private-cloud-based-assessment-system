@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "type": "MCQ",
+    "question": "What does this code do",
+    "answer": "a",
+    "marks": 2
+  },
+  {
+    "id": 2,
+    "type": "Structured",
+    "question": "What does this code do",
+    "answer": "hello",
+    "marks": 5,
+    "students": [
+      {
+        "name": "bob",
+        "marks": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "type": "Code",
+    "question": "What does this code do",
+    "answer": "hello world",
+    "marks": 10
+  }
+]

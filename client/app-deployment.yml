@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ntu-assessment-system
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ntu-assessment-system
+  template:
+    metadata:
+      labels:
+        app: ntu-assessment-system
+    spec:
+      containers:
+        - name: ntu-assessment-system-container
+          image: ntu-assessment-system:1
+          ports:
+            - containerPort: 3000
