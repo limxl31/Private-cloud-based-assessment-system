@@ -9,7 +9,7 @@
   {
     "id": 2,
     "type": "Structured",
-    "question": "What does this code do",
+    "question": "Describe this code.",
     "answer": "hello",
     "marks": 5,
     "students": [
