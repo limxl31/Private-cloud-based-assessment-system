@@ -23,7 +23,11 @@ const ProcessAssessment = (stdans, srcans) => {
             totalMarks += processMCQ(value, correspondingQuestion);
             break;
           case "Structured":
-            totalMarks += processStructured(value, correspondingQuestion);
+            totalMarks += processStructured(
+              value,
+              correspondingQuestion,
+              studentAnswers
+            );
             break;
           case "Code":
             totalMarks += processCode(value, correspondingQuestion);
@@ -58,8 +62,9 @@ const processMCQ = (studentAnswer, question) => {
   }
 };
 
-const processStructured = (studentAnswer, question) => {
+const processStructured = (studentAnswer, question, studentAnswers) => {
   console.log("Processing Structured");
+  console.log("hello");
   // Add student answer to the array (without marking)
   studentAnswers.push({
     questionId: question.id,

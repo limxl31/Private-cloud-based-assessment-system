@@ -3,11 +3,37 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { ProcessAssessment } = require("./ProcessAssessment");
 var srcanswer = require("./upload.json");
-console.log(srcanswer);
 var jsonParser = bodyParser.json();
-
 const app = express();
 app.use(cors());
+const { ProcessCode, compareExecutionResult } = require("./ProcessCode");
+
+app.use(bodyParser.json());
+
+app.post("/submit-code", async (req, res) => {
+  try {
+    // Call the ProcessCode function passing the code and language
+    const executionResult = await ProcessCode(req.body.code, req.body.language);
+    // Fetch correct answer based on the question index
+    const correctAnswer = srcanswer.find(
+      (question) => question.id === req.body.index
+    );
+    // Compare execution result with the correct answer
+    const isCorrect = compareExecutionResult(
+      executionResult,
+      correctAnswer.answer
+    );
+    // Calculate marks obtained
+    const marksObtained = isCorrect ? correctAnswer.marks : 0;
+
+    // Return execution result and marks obtained to frontend
+    res.json({ stdout: executionResult, marks: marksObtained });
+  } catch (error) {
+    console.error("Error submitting code:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/AssessmentPage", (req, res) => {
   // Return the assessment questions from upload.json
   res.json(srcanswer);

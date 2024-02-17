@@ -15,7 +15,7 @@ RUN npm ci
 COPY . .
 
 # Expose the port the web server listens on
-EXPOSE 3000
+EXPOSE 5000
 
 # Specify the command to run the web server
 CMD ["npm", "start"]

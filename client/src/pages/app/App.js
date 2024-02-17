@@ -5,6 +5,7 @@ import Identity from "../identity/Identity.js";
 import { Route, Routes } from "react-router-dom";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import AssessmentPage from "../AssessmentPage.js";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/CoursePage" element={<CoursePage />} />
         <Route path="/NTULogin" element={<NTULogin />} />
+        <Route path="/AssessmentPage" element={<AssessmentPage />} />
         <Route path="/" element={<Identity />} />
       </Routes>
     </div>

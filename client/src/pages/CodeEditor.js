@@ -1,48 +1,80 @@
 import React, { useState } from "react";
-import Editor from "@monaco-editor/react";
+import axios from "axios";
 
-const CodeEditor = () => {
-  const [code, setCode] = useState("// Write your code here");
+const CodeEditor = ({ index }) => {
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
+  const [executionResult, setExecutionResult] = useState("");
+  const [error, setError] = useState("");
+  const [marks, setMarks] = useState(0);
+  const [isCorrect, setIsCorrect] = useState(false);
 
-  const handleEditorChange = (value, event) => {
-    // Update the code state whenever the editor content changes
-    setCode(value);
-  };
-
-  const handleRunCode = () => {
-    // Send the code to the backend for execution
-    // You can use fetch or Axios to send a POST request to your backend server
-    fetch("/run", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the response from the backend
-        console.log("Execution result:", data.result);
-      })
-      .catch((error) => {
-        console.error("Error executing code:", error);
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/submit-code", {
+        code,
+        language,
+        index,
       });
+      setExecutionResult(response.data.stdout);
+      setMarks(response.data.marks);
+      if (response.data.marks > 0) {
+        setIsCorrect(true); // Update state to indicate that the answer is correct
+      } else {
+        setIsCorrect(false);
+      }
+      setError("");
+    } catch (error) {
+      console.error(
+        "Error submitting code:",
+        error.response ? error.response.data : error.message
+      );
+      setError(
+        error.response ? error.response.data.error : "Internal Server Error"
+      );
+      setExecutionResult("");
+      setMarks(0);
+      setIsCorrect(false);
+    }
   };
 
   return (
     <div>
-      <h1>Code Editor</h1>
-      {/* Render the Monaco Editor component */}
-      <Editor
-        height="500px"
-        defaultLanguage="javascript"
-        defaultValue={code}
-        onChange={handleEditorChange}
+      <textarea
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        rows={10}
+        cols={80}
+        placeholder="Enter your code here..."
       />
-      {/* Button to run the code */}
-      <button onClick={handleRunCode}>Run Code</button>
+      <div>
+        <label htmlFor="language-select">Select Language:</label>
+        <select
+          id="language-select"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          {/* Add options for other languages as needed */}
+        </select>
+      </div>
+      <button onClick={handleSubmit}>Submit Code</button>
+      {error && <div>Error: {error}</div>}
+      {executionResult && (
+        <div>
+          <h3>Execution Result:</h3>
+          <pre>{executionResult}</pre>
+        </div>
+      )}
+      {isCorrect && <div>Answer is correct! Marks Obtained: {marks}</div>}
     </div>
   );
+};
+
+// Export function to access marks state
+const exportMarks = () => {
+  return marks;
 };
 
 export default CodeEditor;

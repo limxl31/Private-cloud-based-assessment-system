@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../../images/ntu_logo.png";
 import "./Identity.css";
 import axios from "axios";
+import Header from "../Header";
 
 const Identity = () => {
   function handleClick() {
@@ -31,9 +31,7 @@ const Identity = () => {
   }
   return (
     <div>
-      <header className="NTU-header">
-        <img src={logo} className="NTU-logo" alt="logo" />
-      </header>
+      <Header />
       <Link className="identity" to="/NTULogin">
         <button className="identity-button">Student</button>
       </Link>

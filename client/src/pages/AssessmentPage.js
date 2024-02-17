@@ -1,43 +1,120 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios"; // Import Axios for making HTTP requests
+import axios from "axios";
+import Header from "./Header";
+import CodeEditor from "./CodeEditor";
 
 const AssessmentPage = () => {
-  // State to store assessment questions
   const [assessmentQuestions, setAssessmentQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [userAnswers, setUserAnswers] = useState({});
 
   useEffect(() => {
-    // Function to fetch assessment questions from backend
     const fetchAssessmentQuestions = async () => {
       try {
-        // Make GET request to backend endpoint (/AssessmentPage)
         const response = await axios.get(
           "http://localhost:5000/AssessmentPage"
         );
-
-        // Update state with assessment questions received from backend
         setAssessmentQuestions(response.data);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching assessment questions:", error);
+        setError(
+          "Error fetching assessment questions. Please try again later."
+        );
+        setLoading(false);
       }
     };
 
-    // Call fetchAssessmentQuestions when component mounts
     fetchAssessmentQuestions();
-  }, []); // Empty dependency array ensures useEffect runs only once on component mount
+  }, []);
+
+  const handleInputChange = (questionId, value) => {
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Prevent page reload
+
+    try {
+      const response = await axios.post("http://localhost:5000/submit", {
+        answers: userAnswers,
+      });
+      console.log("Response from backend:", response.data);
+      // Clear userAnswers state or handle success state as needed
+    } catch (error) {
+      console.error("Error submitting answers:", error);
+      // Handle error state
+    }
+  };
 
   return (
     <div>
+      <Header />
       <h1>Assessment Questions</h1>
-      <ul>
-        {/* Map over assessmentQuestions array and render each question */}
-        {assessmentQuestions.map((question, index) => (
-          <li key={index}>
-            <h2>Question {question.id}</h2>
-            <p>{question.question}</p>
-            {/* Add additional rendering logic for other question properties */}
-          </li>
-        ))}
-      </ul>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          {" "}
+          {/* Use onSubmit event to prevent page reload */}
+          <ul>
+            {assessmentQuestions.map((question, index) => (
+              <li key={question.id}>
+                <h2>Question {index + 1}</h2>
+                {question.type === "Code" ? (
+                  <div>
+                    <p>{question.question}</p>
+                    <CodeEditor index={question.id} />
+                  </div>
+                ) : question.type === "MCQ" ? (
+                  <div>
+                    <p>{question.question}</p>
+                    <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
+                      {question.options.map((option, optionIndex) => (
+                        <li key={optionIndex}>
+                          <input
+                            style={{ width: 10 }}
+                            type="radio"
+                            id={`mcq_${index}_${optionIndex}`}
+                            name={`mcq_${index}`}
+                            value={option}
+                            onChange={(e) =>
+                              handleInputChange(question.id, e.target.value)
+                            }
+                          />
+                          <label htmlFor={`mcq_${index}_${optionIndex}`}>
+                            {option}
+                          </label>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : question.type === "Structured" ? (
+                  <div>
+                    <p>{question.question}</p>
+                    <textarea
+                      placeholder="Enter your answer here..."
+                      rows={10}
+                      cols={80}
+                      onChange={(e) =>
+                        handleInputChange(question.id, e.target.value)
+                      }
+                    />
+                  </div>
+                ) : (
+                  <p>{question.question}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+          <button type="submit">Submit</button> {/* Change type to "submit" */}
+        </form>
+      )}
     </div>
   );
 };

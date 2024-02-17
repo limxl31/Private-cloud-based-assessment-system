@@ -16,4 +16,4 @@ spec:
         - name: ntu-assessment-system-container
           image: ntu-assessment-system:1
           ports:
-            - containerPort: 3000
+            - containerPort: 5000

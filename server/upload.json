@@ -3,6 +3,7 @@
     "id": 1,
     "type": "MCQ",
     "question": "What does this code do",
+    "options": ["a", "b", "c"],
     "answer": "a",
     "marks": 2
   },
@@ -10,7 +11,7 @@
     "id": 2,
     "type": "Structured",
     "question": "Describe this code.",
-    "answer": "hello",
+    "answer": "this is a test",
     "marks": 5,
     "students": [
       {
