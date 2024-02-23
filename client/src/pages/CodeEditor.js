@@ -36,6 +36,10 @@ const CodeEditor = ({ index }) => {
       setMarks(0);
       setIsCorrect(false);
     }
+    // Export function to access marks state
+    const exportMarks = () => {
+      return marks;
+    };
   };
 
   return (
@@ -70,11 +74,6 @@ const CodeEditor = ({ index }) => {
       {isCorrect && <div>Answer is correct! Marks Obtained: {marks}</div>}
     </div>
   );
-};
-
-// Export function to access marks state
-const exportMarks = () => {
-  return marks;
 };
 
 export default CodeEditor;

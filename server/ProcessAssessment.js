@@ -43,11 +43,12 @@ const ProcessAssessment = (stdans, srcans) => {
       }
     }
   }
-  console.log("Total Marks:", totalMarks);
   // Save student answers to a file (e.g., in the thumb drive)
   const filename = "student_answers.json";
   fs.writeFileSync(filename, JSON.stringify(studentAnswers, null, 2));
   console.log("Student answers saved to file:", filename);
+  console.log("Total Marks:", totalMarks);
+  return totalMarks;
 };
 // Separate functions to process each type of question
 const processMCQ = (studentAnswer, question) => {
@@ -76,6 +77,7 @@ const processStructured = (studentAnswer, question, studentAnswers) => {
 
 const processCode = (studentAnswer, question) => {
   console.log("Processing Code");
+  return studentAnswer;
   // Your logic to process Code questions
 };
 

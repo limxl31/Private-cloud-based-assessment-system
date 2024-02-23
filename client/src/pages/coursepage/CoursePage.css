@@ -1,0 +1,20 @@
+.course-page-container {
+  /* Ensure it takes up the full width of the container */
+  width: 100%;
+}
+
+.sidebar-and-link-container {
+  display: flex; /* Use flexbox to arrange items horizontally */
+}
+
+/* Optional: Add spacing between Sidebar and the link */
+.sidebar-and-link-container .assessment-page {
+  margin-left: 20px; /* Adjust margin as needed */
+}
+
+/* Style for the link */
+.assessment-page {
+  color: blue; /* Example color */
+  text-decoration: underline; /* Example underline */
+  /* Add more styling as needed */
+}

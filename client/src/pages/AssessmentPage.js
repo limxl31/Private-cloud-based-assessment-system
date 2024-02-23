@@ -8,7 +8,6 @@ const AssessmentPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userAnswers, setUserAnswers] = useState({});
-
   useEffect(() => {
     const fetchAssessmentQuestions = async () => {
       try {
@@ -32,6 +31,16 @@ const AssessmentPage = () => {
     setUserAnswers((prevAnswers) => ({
       ...prevAnswers,
       [questionId]: value,
+    }));
+  };
+
+  const handleCodeMarksChange = (questionId, marks) => {
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: {
+        ...(prevAnswers[questionId] || {}),
+        marks: Math.max(prevAnswers[questionId]?.marks || 0, marks),
+      },
     }));
   };
 
@@ -69,7 +78,12 @@ const AssessmentPage = () => {
                 {question.type === "Code" ? (
                   <div>
                     <p>{question.question}</p>
-                    <CodeEditor index={question.id} />
+                    <CodeEditor
+                      index={question.id}
+                      onMarksChange={(marks) =>
+                        handleCodeMarksChange(question.id, marks)
+                      }
+                    />
                   </div>
                 ) : question.type === "MCQ" ? (
                   <div>
