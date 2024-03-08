@@ -8,6 +8,9 @@ const AssessmentPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userAnswers, setUserAnswers] = useState({});
+  const [codeMarks, setCodeMarks] = useState({});
+  const [marks, setMarks] = useState(0);
+
   useEffect(() => {
     const fetchAssessmentQuestions = async () => {
       try {
@@ -34,22 +37,30 @@ const AssessmentPage = () => {
     }));
   };
 
-  const handleCodeMarksChange = (questionId, marks) => {
-    setUserAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [questionId]: {
-        ...(prevAnswers[questionId] || {}),
-        marks: Math.max(prevAnswers[questionId]?.marks || 0, marks),
-      },
+  const handleExportMarks = (questionId, marks) => {
+    setCodeMarks((prevMarks) => ({
+      ...prevMarks,
+      [questionId]: Math.max(prevMarks[questionId] || 0, marks),
     }));
   };
 
+  const handleBeforeSubmit = async (event) => {
+    event.preventDefault(); // Prevent page reload
+  };
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent page reload
 
     try {
+      // Calculate total score for all code questions
+      let totalCodeMarks = 0;
+      Object.values(codeMarks).forEach((marks) => {
+        totalCodeMarks += marks;
+      });
+
+      // Send total code marks to /submit
       const response = await axios.post("http://localhost:5000/submit", {
         answers: userAnswers,
+        totalCodeMarks: totalCodeMarks,
       });
       console.log("Response from backend:", response.data);
       // Clear userAnswers state or handle success state as needed
@@ -68,7 +79,7 @@ const AssessmentPage = () => {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleBeforeSubmit}>
           {" "}
           {/* Use onSubmit event to prevent page reload */}
           <ul>
@@ -81,7 +92,7 @@ const AssessmentPage = () => {
                     <CodeEditor
                       index={question.id}
                       onMarksChange={(marks) =>
-                        handleCodeMarksChange(question.id, marks)
+                        handleExportMarks(question.id, marks)
                       }
                     />
                   </div>
@@ -126,7 +137,10 @@ const AssessmentPage = () => {
               </li>
             ))}
           </ul>
-          <button type="submit">Submit</button> {/* Change type to "submit" */}
+          <button type="submit" onClick={handleSubmit}>
+            Submit
+          </button>{" "}
+          {/* Change type to "submit" */}
         </form>
       )}
     </div>

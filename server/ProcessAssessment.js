@@ -1,5 +1,6 @@
 const fs = require("fs");
-
+const { processMCQ } = require("./processMCQ");
+const { processStructured } = require("./processStructured");
 const ProcessAssessment = (stdans, srcans) => {
   var totalMarks = 0;
   const studentAnswers = [];
@@ -7,7 +8,9 @@ const ProcessAssessment = (stdans, srcans) => {
   //list of answers from student : [ { id: 1, answer: 'a' }, { id: 2, answer: 'hello' } ]
   // Go through json questions sequentially
   // Process the student's answers and tabulate the marks
+  console.log(srcans);
   for (const [key, value] of Object.entries(ansId)) {
+    console.log("Processing question ID:", key);
     if (srcans[key]) {
       const correspondingQuestion = srcans.find(
         (question) => question.id === value.id
@@ -30,10 +33,7 @@ const ProcessAssessment = (stdans, srcans) => {
             );
             break;
           case "Code":
-            totalMarks += processCode(value, correspondingQuestion);
-            break;
-          case "MultiSelect":
-            totalMarks += processMultiSelect(value, correspondingQuestion);
+            totalMarks += tabCode(value, correspondingQuestion);
             break;
           default:
             console.log("Unhandled question type");
@@ -50,47 +50,11 @@ const ProcessAssessment = (stdans, srcans) => {
   console.log("Total Marks:", totalMarks);
   return totalMarks;
 };
-// Separate functions to process each type of question
-const processMCQ = (studentAnswer, question) => {
-  console.log("Processing MCQ");
-  // Check if student's answer matches the correct answer
-  if (studentAnswer.answer === question.answer) {
-    console.log("Correct answer!");
-    return question.marks; // Increment total marks if correct
-  } else {
-    console.log("Incorrect answer");
-    return 0; // No marks if incorrect
-  }
-};
 
-const processStructured = (studentAnswer, question, studentAnswers) => {
-  console.log("Processing Structured");
-  console.log("hello");
-  // Add student answer to the array (without marking)
-  studentAnswers.push({
-    questionId: question.id,
-    answer: studentAnswer.answer,
-  });
-  console.log("To be graded");
-  return 0;
-};
-
-const processCode = (studentAnswer, question) => {
+const tabCode = (studentAnswer, question) => {
   console.log("Processing Code");
   return studentAnswer;
   // Your logic to process Code questions
-};
-
-const processMultiSelect = (studentAnswer, question) => {
-  console.log("Processing MultiSelect");
-  // Check if student's answer matches the correct answer
-  if (studentAnswer.answer === question.answer) {
-    console.log("Correct answer!");
-    return question.marks; // Increment total marks if correct
-  } else {
-    console.log("Incorrect answer");
-    return 0; // No marks if incorrect
-  }
 };
 
 module.exports = { ProcessAssessment };

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const CodeEditor = ({ index }) => {
+const CodeEditor = ({ index, onMarksChange }) => {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
   const [executionResult, setExecutionResult] = useState("");
@@ -9,7 +9,7 @@ const CodeEditor = ({ index }) => {
   const [marks, setMarks] = useState(0);
   const [isCorrect, setIsCorrect] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleCodeSubmit = async () => {
     try {
       const response = await axios.post("http://localhost:5000/submit-code", {
         code,
@@ -20,6 +20,7 @@ const CodeEditor = ({ index }) => {
       setMarks(response.data.marks);
       if (response.data.marks > 0) {
         setIsCorrect(true); // Update state to indicate that the answer is correct
+        onMarksChange(marks);
       } else {
         setIsCorrect(false);
       }
@@ -36,12 +37,7 @@ const CodeEditor = ({ index }) => {
       setMarks(0);
       setIsCorrect(false);
     }
-    // Export function to access marks state
-    const exportMarks = () => {
-      return marks;
-    };
   };
-
   return (
     <div>
       <textarea
@@ -63,7 +59,7 @@ const CodeEditor = ({ index }) => {
           {/* Add options for other languages as needed */}
         </select>
       </div>
-      <button onClick={handleSubmit}>Submit Code</button>
+      <button onClick={handleCodeSubmit}>Submit Code</button>
       {error && <div>Error: {error}</div>}
       {executionResult && (
         <div>
