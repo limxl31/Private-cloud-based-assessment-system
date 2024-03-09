@@ -3,13 +3,12 @@ import axios from "axios";
 import Header from "./Header";
 import CodeEditor from "./CodeEditor";
 
-const AssessmentPage = () => {
+const AssessmentPage = ({ username }) => {
   const [assessmentQuestions, setAssessmentQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userAnswers, setUserAnswers] = useState({});
   const [codeMarks, setCodeMarks] = useState({});
-  const [marks, setMarks] = useState(0);
 
   useEffect(() => {
     const fetchAssessmentQuestions = async () => {
@@ -37,10 +36,10 @@ const AssessmentPage = () => {
     }));
   };
 
-  const handleExportMarks = (questionId, marks) => {
+  const handleExportMarks = (questionId, codeMarks) => {
     setCodeMarks((prevMarks) => ({
       ...prevMarks,
-      [questionId]: Math.max(prevMarks[questionId] || 0, marks),
+      [questionId]: Math.max(prevMarks[questionId] || 0, codeMarks),
     }));
   };
 
@@ -53,14 +52,15 @@ const AssessmentPage = () => {
     try {
       // Calculate total score for all code questions
       let totalCodeMarks = 0;
-      Object.values(codeMarks).forEach((marks) => {
-        totalCodeMarks += marks;
+      Object.values(codeMarks).forEach((codeMarks) => {
+        totalCodeMarks += codeMarks;
       });
 
       // Send total code marks to /submit
       const response = await axios.post("http://localhost:5000/submit", {
         answers: userAnswers,
         totalCodeMarks: totalCodeMarks,
+        studentID: username,
       });
       console.log("Response from backend:", response.data);
       // Clear userAnswers state or handle success state as needed
@@ -91,8 +91,8 @@ const AssessmentPage = () => {
                     <p>{question.question}</p>
                     <CodeEditor
                       index={question.id}
-                      onMarksChange={(marks) =>
-                        handleExportMarks(question.id, marks)
+                      onMarksChange={(codeMarks) =>
+                        handleExportMarks(question.id, codeMarks)
                       }
                     />
                   </div>

@@ -3,7 +3,7 @@ const { promisify } = require("util");
 const { exec } = require("child_process");
 
 // Function to submit code for execution
-const ProcessCode = async (code, language, questionId, highestCodeScore) => {
+const ProcessCode = async (code, language, questionId) => {
   const fileName = `temp_code.${getFileExtension(language)}`;
   await writeCodeToFile(code, fileName);
 

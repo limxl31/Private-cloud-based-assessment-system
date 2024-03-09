@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../images/ntu_logo.png";
 
-const NTULogin = () => {
+const NTULogin = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,7 +19,7 @@ const NTULogin = () => {
 
     // Here, you can add code to validate the username and password
     // and handle the login logic, such as making an API request.
-
+    onLogin(username);
     console.log("Username:", username);
     console.log("Password:", password);
 
