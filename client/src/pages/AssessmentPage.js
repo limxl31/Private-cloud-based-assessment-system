@@ -2,20 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "./Header";
 import CodeEditor from "./CodeEditor";
+const api_url = process.env.REACT_APP_API_URL1;
 
 const AssessmentPage = ({ username }) => {
   const [assessmentQuestions, setAssessmentQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userAnswers, setUserAnswers] = useState({});
-  const [codeMarks, setCodeMarks] = useState({});
 
   useEffect(() => {
     const fetchAssessmentQuestions = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/AssessmentPage"
-        );
+        const response = await axios.get(`${api_url}/AssessmentPage`);
         setAssessmentQuestions(response.data);
         setLoading(false);
       } catch (error) {
@@ -37,9 +35,10 @@ const AssessmentPage = ({ username }) => {
   };
 
   const handleExportMarks = (questionId, codeMarks) => {
-    setCodeMarks((prevMarks) => ({
-      ...prevMarks,
-      [questionId]: Math.max(prevMarks[questionId] || 0, codeMarks),
+    // Update userAnswers state based on codeMarks changes
+    setUserAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: Math.max(prevAnswers[questionId] || 0, codeMarks),
     }));
   };
 
@@ -50,16 +49,9 @@ const AssessmentPage = ({ username }) => {
     event.preventDefault(); // Prevent page reload
 
     try {
-      // Calculate total score for all code questions
-      let totalCodeMarks = 0;
-      Object.values(codeMarks).forEach((codeMarks) => {
-        totalCodeMarks += codeMarks;
-      });
-
       // Send total code marks to /submit
-      const response = await axios.post("http://localhost:5000/submit", {
+      const response = await axios.post(`${api_url}/submit`, {
         answers: userAnswers,
-        totalCodeMarks: totalCodeMarks,
         studentID: username,
       });
       console.log("Response from backend:", response.data);

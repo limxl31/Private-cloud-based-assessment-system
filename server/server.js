@@ -45,19 +45,17 @@ app.post("/submit", jsonParser, (req, res) => {
   var sdntanswer = req.body;
   console.log(sdntanswer);
   // See if the file exists
+  let result = 0;
   if (srcanswer != null) {
     console.log("The file exists!");
-    // console.log(srcanswer);
-    const result = ProcessAssessment(sdntanswer, srcanswer);
+    result = ProcessAssessment(sdntanswer, srcanswer);
   } else {
     console.log("The file does not exist!");
     res.status(400).json({ error: "Invalid JSON data" });
     return;
   }
   // Return marks to thumbdrive
-  const data = req.body;
-  console.log(data);
-  res.json(data);
+  res.json(result);
 });
 
 app.listen(5000, () => {

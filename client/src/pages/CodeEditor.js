@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+const api_url = process.env.REACT_APP_API_URL2;
 
 const CodeEditor = ({ index, onMarksChange }) => {
   const [code, setCode] = useState("");
@@ -11,16 +12,17 @@ const CodeEditor = ({ index, onMarksChange }) => {
 
   const handleCodeSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/submit-code", {
+      const response = await axios.post(`${api_url}/submit-code`, {
         code,
         language,
         index,
       });
       setExecutionResult(response.data.stdout);
-      setMarks(response.data.marks);
+      const updatedMarks = response.data.marks;
       if (response.data.marks > 0) {
         setIsCorrect(true); // Update state to indicate that the answer is correct
-        onMarksChange(marks);
+        setMarks(updatedMarks);
+        onMarksChange(updatedMarks);
       } else {
         setIsCorrect(false);
       }

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment-code
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: code-processing-backend
+  template:
+    metadata:
+      labels:
+        app: code-processing-backend
+    spec:
+      containers:
+        - name: backend-container-code
+          image: limxl31/assessment_system_backend:code1
+          resources:
+            requests:
+              cpu: "100m" # Request 100 millicores (0.1 CPU core)
+            limits:
+              cpu: "500m" # Limit CPU usage to 500 millicores (0.5 CPU core)
+          ports:
+            - containerPort: 5000

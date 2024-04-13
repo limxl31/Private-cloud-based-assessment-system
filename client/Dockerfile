@@ -9,7 +9,7 @@ COPY package*.json ./
 
 # Download dependencies based on package-lock.json
 RUN npm install
-RUN npm ci
+RUN npm c
 
 # Copy the rest of the application code to the container
 COPY . .

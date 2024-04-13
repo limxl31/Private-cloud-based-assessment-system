@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment-mcqandsaq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcq-structured-backend
+  template:
+    metadata:
+      labels:
+        app: mcq-structured-backend
+    spec:
+      containers:
+        - name: backend-container-mcqandsaq
+          image: limxl31/assessment_system_backend:mcqandsaq1
+          resources:
+            requests:
+              cpu: "100m" # Request 100 millicores (0.1 CPU core)
+            limits:
+              cpu: "500m" # Limit CPU usage to 500 millicores (0.5 CPU core)
+          ports:
+            - containerPort: 5000

@@ -6,12 +6,3 @@
   display: flex;
   align-items: center; /* Align items vertically */
 }
-
-.sidebar {
-  /* Add styles for your sidebar */
-}
-
-.assessment-page {
-  /* Add styles for your assessment page link */
-  margin-left: 10px; /* Adjust margin as needed */
-}

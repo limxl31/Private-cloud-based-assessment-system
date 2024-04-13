@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import logo from "../images/ntu_logo.png";
 
 const NTULogin = ({ onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -26,6 +27,7 @@ const NTULogin = ({ onLogin }) => {
     // Clear the form fields
     setUsername("");
     setPassword("");
+    navigate("/CoursePage");
   };
   return (
     <div>
@@ -55,9 +57,7 @@ const NTULogin = ({ onLogin }) => {
               required
             />
           </div>
-          <Link to="/CoursePage">
-            <button type="submit">Login</button>
-          </Link>
+          <button type="submit">Login</button>
         </form>
       </div>
     </div>

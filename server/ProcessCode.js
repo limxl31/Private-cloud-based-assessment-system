@@ -9,8 +9,8 @@ const ProcessCode = async (code, language, questionId) => {
 
   return new Promise((resolve, reject) => {
     const command =
-      language === "python" ? `python ${fileName}` : `node ${fileName}`;
-    exec(command, { shell: true }, (error, stdout, stderr) => {
+      language === "python" ? `python3 ${fileName}` : `node ${fileName}`;
+    exec(command, { shell: false }, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing code: ${error.message}`);
         reject(error);

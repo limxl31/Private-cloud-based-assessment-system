@@ -1,12 +1,12 @@
-const processStructured = (studentAnswer, question, studentAnswers) => {
+const fs = require("fs");
+const processStructured = (studentAnswer, question, existingData) => {
   console.log("Processing Structured");
-  console.log("hello");
-  // Add student answer to the array (without marking)
-  studentAnswers.push({
-    questionId: question.id,
-    answer: studentAnswer.answer,
-  });
-  console.log("To be graded");
+  const data = {
+    id: question.id,
+    answer: studentAnswer,
+  };
+  existingData.push(data);
+  console.log("Structured answers saved to array:");
   return 0;
 };
 
