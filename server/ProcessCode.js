@@ -11,17 +11,17 @@ const ProcessCode = async (code, language, questionId) => {
     const command =
       language === "python" ? `python3 ${fileName}` : `node ${fileName}`;
     exec(command, { shell: false }, (error, stdout, stderr) => {
+      // After resolving the promise, delete the temporary file
+      deleteTempFile(fileName);
       if (error) {
         console.error(`Error executing code: ${error.message}`);
         reject(error);
-      }
-      if (stderr) {
+      } else if (stderr) {
         console.error(`Code execution error: ${stderr}`);
         reject(new Error(stderr));
+      } else {
+        resolve({ stdout });
       }
-      resolve({ stdout });
-      // After resolving the promise, delete the temporary file
-      deleteTempFile(fileName);
     });
   });
 };

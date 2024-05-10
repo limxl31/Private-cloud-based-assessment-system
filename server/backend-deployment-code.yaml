@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend-container-code
-          image: limxl31/assessment_system_backend:code1
+          image: limxl31/assessment_system_backend:code2
           resources:
             requests:
               cpu: "100m" # Request 100 millicores (0.1 CPU core)

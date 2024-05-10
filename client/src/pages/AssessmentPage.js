@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import CodeEditor from "./CodeEditor";
 const api_url = process.env.REACT_APP_API_URL1;
@@ -9,6 +10,7 @@ const AssessmentPage = ({ username }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userAnswers, setUserAnswers] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAssessmentQuestions = async () => {
@@ -55,6 +57,7 @@ const AssessmentPage = ({ username }) => {
         studentID: username,
       });
       console.log("Response from backend:", response.data);
+      navigate("/CoursePage");
       // Clear userAnswers state or handle success state as needed
     } catch (error) {
       console.error("Error submitting answers:", error);
