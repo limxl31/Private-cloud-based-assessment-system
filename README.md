@@ -48,8 +48,9 @@ Password: raspberry
 1. SSH into raspberrypi4
 2. Type "kubectl proxy" into terminal
 3. kubectl will make dashboard available at "http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/"
-4. Fill in bearer token as "eyJhbGciOiJSUzI1NiIsImtpZCI6InFSM1NSX05FSkQ2UkY0VjduMjVDVXZZU05wR1NNLWZaNmI1ME41VFBKNnMifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiLCJrM3MiXSwiZXhwIjoxNzA5NzE1OTE5LCJpYXQiOjE3MDk3MTIzMTksImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJkZWZhdWx0Iiwic2VydmljZWFjY291bnQiOnsibmFtZSI6ImRhc2hib2FyZC1hZG1pbi1zYSIsInVpZCI6IjNlZmYyZGJlLTFmNWMtNGI4Ny1hZTZkLTY1N2NjOWI2ZDM0ZCJ9fSwibmJmIjoxNzA5NzEyMzE5LCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6ZGVmYXVsdDpkYXNoYm9hcmQtYWRtaW4tc2EifQ.ST60emAt3sBZRCxU-eK_QtXfdO1zDe5z_Xj5ZEwqXStavdD-zUPFi1NK2P2T-Gy9PTiC1tH0nHrL1MPhrFMY2_T9JVaPhXY0b0Q4vhdW_X2dARhL8e4gGZqsAW3iNHDKNx1axMhJIu4Hp_WzJn1NWRhSpfDbF785RVszflf1ZR8ZSrEYtwzIfqOmXghiKW82q8_Bnb2b_bx8CceV5dqVw1H11ol6wo5XisQ84WcwlFnf4RqSXTM5ogcW55dO_TlvZWwoXA-OTHMU317r0bTaqNTWrsdNMbiYSWaAwR-D14THkEMZASqJcUTthMXfAMQSFu_e2yAgBizd0oc5aS8bPw"
-5. Navigate to the "Pods" page under workloads to view active pods
+4. Create a secret token under dashboard-admin-sa role using "kubectl create token dashboard-admin-sa"
+5. Fill in the secret token
+6. Navigate to the "Pods" page under workloads to view active pods
 ![image](https://github.com/limxl31/Private-cloud-based-assessment-system/assets/66054853/be2762c3-1a8a-433a-a372-4bb0f41a84a6)
 
 
